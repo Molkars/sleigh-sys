@@ -72,7 +72,7 @@ const SOURCE_FILES: &[&str] = &[
     //"comment_ghidra.cc",
     "sleigh_arch.cc",
     "sleigh.cc",
-    "filemanage.cc",
+    // "filemanage.cc", // not-on-windows: unistd.h
     "semantics.cc",
     "slghsymbol.cc",
     "context.cc",
@@ -87,14 +87,21 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 fn main() {
-    cxx_build::bridge("src/lib.rs")
+    let mut builder = cxx_build::bridge("src/lib.rs");
+
+    builder
         .cpp(true)
         .define("PACKAGE", "cppserver")
         .files(SOURCE_FILES.iter().map(|s| Path::new("decompiler").join(s)))
         .file("bridge/bridge.cc")
         .includes(["decompiler", "bridge"])
-        .flag("-lbfd -lz")
         .warnings(false)
-        .flag_if_supported("-std=c++14")
-        .compile("sleigh");
+        .flag_if_supported("-std=c++14");
+
+    #[cfg(not(target_os = "windows"))]
+    {
+        builder.flag("-lbfd -lz");
+    }
+
+    builder.compile("sleigh");
 }
