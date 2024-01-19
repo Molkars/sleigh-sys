@@ -1,11 +1,12 @@
 use cxx::CxxString;
-use cxx::CxxVector;
-use cxx::UniquePtr;
-use std::os::raw::c_char;
 
 use num_derive::FromPrimitive;
 
+#[cfg(feature = "serde")]
+use serde_derive;
+
 #[derive(Debug, FromPrimitive)]
+#[cfg_attr(feature = "serde", derive(serde_derive::Serialize))]
 pub enum SpaceType {
     Constant = 0,
     Processor = 1,
@@ -23,6 +24,7 @@ impl SpaceType {
 }
 
 #[derive(Debug, FromPrimitive)]
+#[cfg_attr(feature = "serde", derive(serde_derive::Serialize))]
 pub enum Opcode {
     Copy = 1,
     ///< Copy one operand to another
