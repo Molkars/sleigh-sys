@@ -26,156 +26,176 @@ impl SpaceType {
 #[derive(Debug, FromPrimitive)]
 #[cfg_attr(feature = "serde", derive(serde_derive::Serialize))]
 pub enum Opcode {
-    Copy = 1,
     ///< Copy one operand to another
-    Load = 2,
+    Copy = 1,
     ///< Load from a pointer into a specified address space
-    Store = 3,
+    Load = 2,
     ///< Store at a pointer into a specified address space
-    Branch = 4,
+    Store = 3,
     ///< Always branch
-    CBranch = 5,
+    Branch = 4,
     ///< Conditional branch
-    BranchInd = 6,
+    CBranch = 5,
     ///< Indirect branch (jumptable)
-    Call = 7,
+    BranchInd = 6,
     ///< Call to an absolute address
-    CallInd = 8,
+    Call = 7,
     ///< Call through an indirect address
-    CallOther = 9,
+    CallInd = 8,
     ///< User-defined operation
-    Return = 10,
+    CallOther = 9,
     ///< Return from subroutine
+    Return = 10,
+
+    // =====================================================
     // Integer/bit operations
-    IntEqual = 11,
+    // =====================================================
+
     ///< Integer comparison, equality (==)
-    IntNotEqual = 12,
+    IntEqual = 11,
     ///< Integer comparison, in-equality (!=)
-    IntSLess = 13,
+    IntNotEqual = 12,
     ///< Integer comparison, signed less-than (<)
-    IntSLessEqual = 14,
+    IntSLess = 13,
     ///< Integer comparison, signed less-than-or-equal (<=)
-    IntLess = 15,
+    IntSLessEqual = 14,
     ///< Integer comparison, unsigned less-than (<)
+    IntLess = 15,
+
+    // =====================================================
     // This also indicates a borrow on unsigned substraction
-    IntLessEqual = 16,
+    // =====================================================
+
     ///< Integer comparison, unsigned less-than-or-equal (<=)
-    IntZExt = 17,
+    IntLessEqual = 16,
     ///< Zero extension
-    IntSExt = 18,
+    IntZExt = 17,
     ///< Sign extension
-    IntAdd = 19,
+    IntSExt = 18,
     ///< Addition, signed or unsigned (+)
-    IntSub = 20,
+    IntAdd = 19,
     ///< Subtraction, signed or unsigned (-)
-    IntCarry = 21,
+    IntSub = 20,
     ///< Test for unsigned carry
-    IntSCarry = 22,
+    IntCarry = 21,
     ///< Test for signed carry
-    IntSBorrow = 23,
+    IntSCarry = 22,
     ///< Test for signed borrow
-    Int2Comp = 24,
+    IntSBorrow = 23,
     ///< Twos complement
-    IntNegate = 25,
+    Int2Comp = 24,
     ///< Logical/bitwise negation (~)
-    IntXor = 26,
+    IntNegate = 25,
     ///< Logical/bitwise exclusive-or (^)
-    IntAnd = 27,
+    IntXor = 26,
     ///< Logical/bitwise and (&)
-    IntOr = 28,
+    IntAnd = 27,
     ///< Logical/bitwise or (|)
-    IntLeft = 29,
+    IntOr = 28,
     ///< Left shift (<<)
-    IntRight = 30,
+    IntLeft = 29,
     ///< Right shift, logical (>>)
-    IntSRight = 31,
+    IntRight = 30,
     ///< Right shift, arithmetic (>>)
-    IntMult = 32,
+    IntSRight = 31,
     ///< Integer multiplication, signed and unsigned (*)
-    IntDiv = 33,
+    IntMult = 32,
     ///< Integer division, unsigned (/)
-    IntSDiv = 34,
+    IntDiv = 33,
     ///< Integer division, signed (/)
-    IntRem = 35,
+    IntSDiv = 34,
     ///< Remainder/modulo, unsigned (%)
-    IntSRem = 36,
+    IntRem = 35,
     ///< Remainder/modulo, signed (%)
-    BoolNegate = 37,
+    IntSRem = 36,
     ///< Boolean negate (!)
-    BoolXor = 38,
+    BoolNegate = 37,
     ///< Boolean exclusive-or (^^)
-    BoolAnd = 39,
+    BoolXor = 38,
     ///< Boolean and (&&)
-    BoolOr = 40,
+    BoolAnd = 39,
     ///< Boolean or (||)
+    BoolOr = 40,
+
+    // =====================================================
     // Floating point operations
-    FloatEqual = 41,
+    // =====================================================
+
     ///< Floating-point comparison, equality (==)
-    FloatNotEqual = 42,
+    FloatEqual = 41,
     ///< Floating-point comparison, in-equality (!=)
-    FloatLess = 43,
+    FloatNotEqual = 42,
     ///< Floating-point comparison, less-than (<)
-    FloatLessEqual = 44,
+    FloatLess = 43,
     ///< Floating-point comparison, less-than-or-equal (<=)
+    FloatLessEqual = 44,
+
+    // =====================================================
     // Slot 45 is currently unused
-    FloatNan = 46,
+    // =====================================================
+
     ///< Not-a-number test (NaN)
-    FloatAdd = 47,
+    FloatNan = 46,
     ///< Floating-point addition (+)
-    FloatDiv = 48,
+    FloatAdd = 47,
     ///< Floating-point division (/)
-    FloatMult = 49,
+    FloatDiv = 48,
     ///< Floating-point multiplication (*)
-    FloatSub = 50,
+    FloatMult = 49,
     ///< Floating-point subtraction (-)
-    FloatNeg = 51,
+    FloatSub = 50,
     ///< Floating-point negation (-)
-    FloatAbs = 52,
+    FloatNeg = 51,
     ///< Floating-point absolute value (abs)
-    FloatSqrt = 53,
+    FloatAbs = 52,
     ///< Floating-point square root (sqrt)
-    FloatInt2Float = 54,
+    FloatSqrt = 53,
     ///< Convert an integer to a floating-point
-    FloatFloat2Float = 55,
+    FloatInt2Float = 54,
     ///< Convert between different floating-point sizes
-    FloatTrunc = 56,
+    FloatFloat2Float = 55,
     ///< Round towards zero
-    FloatCeil = 57,
+    FloatTrunc = 56,
     ///< Round towards +infinity
-    FloatFloor = 58,
+    FloatCeil = 57,
     ///< Round towards -infinity
-    FloatRound = 59,
+    FloatFloor = 58,
     ///< Round towards nearest
+    FloatRound = 59,
+
+    // =====================================================
     // Internal opcodes for simplification. Not
     // typically generated in a direct translation.
-
     // Data-flow operations
-    MultiEqual = 60,
+    // =====================================================
+
     ///< Phi-node operator
-    Indirect = 61,
+    MultiEqual = 60,
     ///< Copy with an indirect effect
-    Piece = 62,
+    Indirect = 61,
     ///< Concatenate
-    SubPiece = 63,
+    Piece = 62,
     ///< Truncate
-    Cast = 64,
+    SubPiece = 63,
     ///< Cast from one data-type to another
-    PtrAdd = 65,
+    Cast = 64,
     ///< Index into an array ([])
-    PtrSub = 66,
+    PtrAdd = 65,
     ///< Drill down to a sub-field  (->)
-    SegmentOp = 67,
+    PtrSub = 66,
     ///< Look-up a \e segmented address
-    CPoolRef = 68,
+    SegmentOp = 67,
     ///< Recover a value from the \e constant \e pool
-    New = 69,
+    CPoolRef = 68,
     ///< Allocate a new object (new)
-    Insert = 70,
+    New = 69,
     ///< Insert a bit-range
-    Extract = 71,
+    Insert = 70,
     ///< Extract a bit-range
-    PopCount = 72,
+    Extract = 71,
     ///< Count the 1-bits
+    PopCount = 72,
+    ///< INT MAX?
     Max = 73,
 }
 
