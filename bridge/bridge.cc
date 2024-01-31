@@ -61,14 +61,14 @@ int32_t Decompiler::translate(RustPCodeEmit *emit, uint64_t addr) const {
         off += this->oneInstruction(p, address);
       } catch (BadDataError &err) {
         if (off) {
-          break;
+          throw err;
         }
-        throw err;
+        break;
       } catch (UnimplError &err) {
         if (off) {
-          break;
+            throw err;
         }
-        throw err;
+        break;
       }
   }
   return off;
