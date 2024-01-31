@@ -2,6 +2,7 @@
 //#include "../target/cxxbridge/sleigh-sys/src/lib.rs.h"
 #include "sleigh-sys/src/lib.rs.h"
 #include <mutex>
+#include <iostream>
 
 unique_ptr<Decompiler> newDecompiler(RustLoadImage *loadImage,
                                      unique_ptr<DocumentStorage> spec) {
@@ -58,16 +59,11 @@ int32_t Decompiler::translate(RustPCodeEmit *emit, uint64_t addr) const {
       auto address = Address(this->getDefaultCodeSpace(), addr + off);
 
       try {
+        std::cout << "translation: " << off << std::endl;
         off += this->oneInstruction(p, address);
       } catch (BadDataError &err) {
-        if (off) {
-          throw err;
-        }
         break;
       } catch (UnimplError &err) {
-        if (off) {
-            throw err;
-        }
         break;
       }
   }
@@ -81,12 +77,9 @@ int32_t Decompiler::disassemble(RustAssemblyEmit *emit, uint64_t addr) const {
   while (true) {
     auto address = Address(this->getDefaultCodeSpace(), addr + off);
     try {
-        off += this->printAssembly(p, address);
+      off += this->printAssembly(p, address);
     } catch (BadDataError &err) {
-        if (!off) {
-            throw err;
-        }
-        break;
+      break;
     }
   }
 
