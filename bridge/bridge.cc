@@ -51,15 +51,27 @@ void RustPCodeEmitProxy::dump(const Address &addr, OpCode opc,
 }
 
 int32_t Decompiler::translate(RustPCodeEmit *emit, uint64_t addr) const {
-  auto address = Address(this->getDefaultCodeSpace(), addr);
   auto p = RustPCodeEmitProxy(emit);
-  int32_t n = 0;
-  try {
-    n = this->oneInstruction(p, address);
-  } catch (...) {
-    // TODO
+
+  uint32_t off = 0;
+  while (true) {
+      auto address = Address(this->getDefaultCodeSpace(), addr + off);
+
+      try {
+        off += this->oneInstruction(p, address);
+      } catch (BadDataError &err) {
+        if (off) {
+          break;
+        }
+        throw err;
+      } catch (UnimplError &err) {
+        if (off) {
+          break;
+        }
+        throw err;
+      }
   }
-  return n;
+  return off;
 }
 
 int32_t Decompiler::disassemble(RustAssemblyEmit *emit, uint64_t addr) const {
