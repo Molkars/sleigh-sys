@@ -87,6 +87,9 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 fn main() {
+    println!("cargo:rerun-if-changed=bridge/");
+    println!("cargo:rerun-if-changed=decompiler/");
+
     let mut builder = cxx_build::bridge("src/lib.rs");
 
     builder

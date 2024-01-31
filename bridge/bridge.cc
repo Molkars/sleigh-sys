@@ -71,7 +71,7 @@ int32_t Decompiler::disassemble(RustAssemblyEmit *emit, uint64_t addr) const {
     try {
         off += this->printAssembly(p, address);
     } catch (BadDataError &err) {
-        if (!offset) {
+        if (!off) {
             throw err;
         }
     }
