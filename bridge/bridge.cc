@@ -63,15 +63,21 @@ int32_t Decompiler::translate(RustPCodeEmit *emit, uint64_t addr) const {
 }
 
 int32_t Decompiler::disassemble(RustAssemblyEmit *emit, uint64_t addr) const {
-  auto address = Address(this->getDefaultCodeSpace(), addr);
   auto p = RustAssemblyEmitProxy(emit);
-  int32_t n = 0;
-  try {
-    n = this->printAssembly(p, address);
-  } catch (...) {
-    // TODO
+
+  uint32_t off = 0;
+  while (true) {
+    auto address = Address(this->getDefaultCodeSpace(), addr + off);
+    try {
+        off += this->printAssembly(p, address);
+    } catch (BadDataError &err) {
+        if (!offset) {
+            throw err;
+        }
+    }
   }
-  return n;
+
+  return off;
 }
 
 uint32_t getVarnodeSize(const VarnodeData &data) { return data.size; }
