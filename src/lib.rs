@@ -399,8 +399,8 @@ pub mod ffi {
         fn getAddrSpaceType(addr: &AddrSpace) -> u32;
 
         type Decompiler;
-        unsafe fn translate(self: &Decompiler, emit: *mut RustPCodeEmit, addr: u64) -> i32;
-        unsafe fn disassemble(self: &Decompiler, emit: *mut RustAssemblyEmit, addr: u64) -> i32;
+        unsafe fn translate(self: &Decompiler, emit: *mut RustPCodeEmit, addr: u64, limit: u64) -> i32;
+        unsafe fn disassemble(self: &Decompiler, emit: *mut RustAssemblyEmit, addr: u64, limit: u64) -> i32;
         unsafe fn getContext(self: Pin<&mut Decompiler>) -> *mut ContextDatabase;
         unsafe fn newDecompiler(
             loadImage: *mut RustLoadImage,

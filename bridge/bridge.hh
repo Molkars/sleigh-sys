@@ -70,8 +70,8 @@ public:
     this->initialize(*this->spec);
   }
 
-  int32_t translate(RustPCodeEmit *emit, uint64_t addr) const;
-  int32_t disassemble(RustAssemblyEmit *emit, uint64_t addr) const;
+  int32_t translate(RustPCodeEmit *emit, uint64_t addr, uint64_t limit) const;
+  int32_t disassemble(RustAssemblyEmit *emit, uint64_t addr, uint64_t limit) const;
   ContextDatabase *getContext() { return &this->context; }
 };
 
