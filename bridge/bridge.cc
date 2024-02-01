@@ -59,7 +59,7 @@ int32_t Decompiler::translate(RustPCodeEmit *emit, uint64_t addr, uint64_t limit
       auto address = Address(this->getDefaultCodeSpace(), addr + off);
 
       try {
-        std::cout << "translation: " << off << std::endl;
+        // std::cout << "translation: " << off << std::endl;
         off += this->oneInstruction(p, address);
       } catch (BadDataError &err) {
         break;
