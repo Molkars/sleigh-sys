@@ -5,6 +5,7 @@
 #include <mutex>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include "../decompiler/address.hh"
 #include "../decompiler/globalcontext.hh"
@@ -57,6 +58,15 @@ public:
   virtual void adjustVma(long adjust);
 };
 
+class RegisterPair {
+public:
+    std::string key;
+    VarnodeData varnode;
+
+    const std::string &getKey() const { return this->key; }
+    const VarnodeData &getVarnode() const { return this->varnode; }
+};
+
 class Decompiler : Sleigh {
 private:
   unique_ptr<LoadImage> loadImage;
@@ -73,6 +83,7 @@ public:
   int32_t translate(RustPCodeEmit *emit, uint64_t addr, uint64_t limit) const;
   int32_t disassemble(RustAssemblyEmit *emit, uint64_t addr, uint64_t limit) const;
   ContextDatabase *getContext() { return &this->context; }
+  void getRegisterList(std::vector<RegisterPair> &out);
 };
 
 unique_ptr<Decompiler> newDecompiler(RustLoadImage *loadImage,

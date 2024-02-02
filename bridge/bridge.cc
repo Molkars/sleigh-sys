@@ -92,3 +92,14 @@ void RustAssemblyEmitProxy::dump(const Address &addr, const string &mnem,
                                  const string &body) {
   this->inner->dump(addr, mnem, body);
 }
+
+void Decompiler::getRegisterList(std::vector<RegisterPair> &out) {
+    std::map<VarnodeData, std::string> reglist;
+    getAllRegisters(reglist);
+    for (const auto &entry : reglist) {
+        RegisterPair pair{};
+        pair.varnode = entry.first;
+        pair.key = entry.second;
+        out.push_back(std::move(pair));
+    }
+}
