@@ -5,7 +5,7 @@ use num_derive::FromPrimitive;
 #[cfg(feature = "serde")]
 use serde_derive;
 
-#[derive(Debug, FromPrimitive)]
+#[derive(Debug, Copy, Clone, FromPrimitive)]
 #[cfg_attr(feature = "serde", derive(serde_derive::Serialize))]
 pub enum SpaceType {
     Constant = 0,
@@ -23,7 +23,7 @@ impl SpaceType {
     }
 }
 
-#[derive(Debug, FromPrimitive)]
+#[derive(Debug, Copy, Clone, FromPrimitive)]
 #[cfg_attr(feature = "serde", derive(serde_derive::Serialize))]
 pub enum Opcode {
     ///< Copy one operand to another
