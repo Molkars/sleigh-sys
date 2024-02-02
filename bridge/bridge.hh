@@ -83,7 +83,7 @@ public:
   int32_t translate(RustPCodeEmit *emit, uint64_t addr, uint64_t limit) const;
   int32_t disassemble(RustAssemblyEmit *emit, uint64_t addr, uint64_t limit) const;
   ContextDatabase *getContext() { return &this->context; }
-  void getRegisterList(std::vector<RegisterPair> &out);
+  void getRegisterList(std::vector<RegisterPair> &out) const;
 };
 
 unique_ptr<Decompiler> newDecompiler(RustLoadImage *loadImage,

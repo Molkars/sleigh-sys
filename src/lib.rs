@@ -406,7 +406,7 @@ pub mod ffi {
             loadImage: *mut RustLoadImage,
             spec: UniquePtr<DocumentStorage>,
         ) -> UniquePtr<Decompiler>;
-        unsafe fn getRegisterList(self: Pin<&mut Decompiler>, out: Pin<&mut CxxVector<RegisterPair>>);
+        unsafe fn getRegisterList(self: &Decompiler, out: Pin<&mut CxxVector<RegisterPair>>);
 
         type RegisterPair;
         fn getKey(self: &RegisterPair) -> &CxxString;
